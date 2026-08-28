@@ -1,6 +1,6 @@
 # SPEC 01 — Home /: Feed
 
-**Estado:** Draft
+**Estado:** Aprobado
 **Depende de:** Ninguna
 **Fecha:** 2026-08-27
 **Objetivo:** Implementar la plantilla `referencias/pantallas/feed.dc.html` como el home `/` del proyecto, replicando el estilo visual de forma idéntica, sin autenticación ni base de datos.
@@ -47,14 +47,14 @@ Cada paso deja la app compilando y visualizable.
 
 ## Criterios de aceptación
 
-- [ ] `app/page.tsx` ya no contiene el scaffold de create-next-app y renderiza el feed.
-- [ ] El home `/` se ve visualmente idéntico a `referencias/pantallas/feed.dc.html` (colores, tipografías, tamaños, espaciado, iconos).
-- [ ] Las fuentes Fredoka y Nunito se cargan y aplican (Nunito para cuerpo, Fredoka para títulos/elementos destacados).
-- [ ] El sidebar y el main tienen el mismo layout del mockup (sidebar 248px sticky, contenido centrado max 760px).
-- [ ] Los textos visibles están en español (idénticos al mockup) pero todo el código interno usa identificadores, props y tipos en inglés, sin strings de UI en español dentro de la lógica.
-- [ ] No se añaden dependencias nuevas de runtime (iconos y estilos usan SVG inline / Tailwind ya presentes).
-- [ ] `npm run lint` y `npx tsc --noEmit` pasan sin errores.
-- [ ] `npm run build` compila correctamente.
+- [x] `app/page.tsx` ya no contiene el scaffold de create-next-app y renderiza el feed.
+- [x] El home `/` se ve visualmente idéntico a `referencias/pantallas/feed.dc.html` (colores, tipografías, tamaños, espaciado, iconos).
+- [x] Las fuentes Fredoka y Nunito se cargan y aplican (Nunito para cuerpo, Fredoka para títulos/elementos destacados).
+- [x] El sidebar y el main tienen el mismo layout del mockup (sidebar 248px sticky, contenido centrado max 760px).
+- [x] Los textos visibles están en español (idénticos al mockup) pero todo el código interno usa identificadores, props y tipos en inglés, sin strings de UI en español dentro de la lógica.
+- [x] No se añaden dependencias nuevas de runtime (iconos y estilos usan SVG inline / Tailwind ya presentes).
+- [x] `npm run lint` y `npx tsc --noEmit` pasan sin errores.
+- [x] `npm run build` compila correctamente.
 
 ## Decisiones tomadas y descartadas
 

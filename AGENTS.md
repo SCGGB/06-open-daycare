@@ -39,6 +39,10 @@ There is no test setup (no test runner, no CI workflows).
 ## Spec Driven Development - Skills
 - /spec usaremos esta habilidad para crear las especificaciones
 - /spec-impl usaremos esta skill para hacer las implementaciones
+- /verify-spec verificación de specs con el agente spec-verifier
+
+## Agents
+- **spec-verifier**: agente subagent que verifica criterios de aceptación desde archivos spec usando Context7, Playwright y vision
 
 ## Reglas de código
 
