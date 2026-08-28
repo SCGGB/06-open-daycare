@@ -39,3 +39,7 @@ There is no test setup (no test runner, no CI workflows).
 ## Spec Driven Development - Skills
 - /spec usaremos esta habilidad para crear las especificaciones
 - /spec-impl usaremos esta skill para hacer las implementaciones
+
+## Reglas de código
+
+- Usar código limpio, nombres, funciones, variables, etc. en ingles
