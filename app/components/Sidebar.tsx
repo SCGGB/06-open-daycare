@@ -1,3 +1,7 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import {
   BellIcon,
@@ -12,17 +16,24 @@ import {
 type NavItem = {
   label: string;
   icon: ReactNode;
-  active?: boolean;
+  href?: string;
 };
 
 const navItems: NavItem[] = [
-  { label: "Feed", icon: <HomeIcon />, active: true },
-  { label: "Niños", icon: <UsersIcon /> },
+  { label: "Feed", icon: <HomeIcon />, href: "/" },
+  { label: "Niños", icon: <UsersIcon />, href: "/kids" },
   { label: "Avisos", icon: <BellIcon /> },
   { label: "Mi cuenta", icon: <UserIcon /> },
 ];
 
+function isNavActive(item: NavItem, pathname: string): boolean {
+  if (!item.href) return false;
+  if (item.href === "/") return pathname === "/";
+  return pathname.startsWith(item.href);
+}
+
 export function Sidebar() {
+  const pathname = usePathname();
   return (
     <aside className="sticky top-0 flex h-screen w-[248px] flex-none flex-col border-r border-[#ECE0D0] bg-[#FFFDF9] p-6 px-4">
       <a href="#" className="flex items-center gap-[11px] py-1 pl-2 pr-2 pb-[22px]">
@@ -46,20 +57,30 @@ export function Sidebar() {
       </a>
 
       <nav className="flex flex-1 flex-col gap-1">
-        {navItems.map((item) => (
-          <a
-            key={item.label}
-            href="#"
-            className={
-              item.active
-                ? "flex items-center gap-3 rounded-[12px] bg-[#FBE3D8] px-3 py-[11px] text-[14.5px] font-extrabold text-[#D9583C]"
-                : "flex items-center gap-3 rounded-[12px] bg-transparent px-3 py-[11px] text-[14.5px] font-semibold text-[#6E6359]"
-            }
-          >
-            {item.icon}
-            {item.label}
-          </a>
-        ))}
+        {navItems.map((item) =>
+          item.href ? (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={
+                isNavActive(item, pathname)
+                  ? "flex items-center gap-3 rounded-[12px] bg-[#FBE3D8] px-3 py-[11px] text-[14.5px] font-extrabold text-[#D9583C]"
+                  : "flex items-center gap-3 rounded-[12px] bg-transparent px-3 py-[11px] text-[14.5px] font-semibold text-[#6E6359]"
+              }
+            >
+              {item.icon}
+              {item.label}
+            </Link>
+          ) : (
+            <span
+              key={item.label}
+              className="flex items-center gap-3 rounded-[12px] bg-transparent px-3 py-[11px] text-[14.5px] font-semibold text-[#6E6359]"
+            >
+              {item.icon}
+              {item.label}
+            </span>
+          ),
+        )}
       </nav>
 
       <div className="mt-2.5 border-t border-[#ECE0D0] pt-[14px]">
