@@ -1,6 +1,10 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { PlusIcon } from "@/app/components/icons";
 import { Sidebar } from "@/app/components/Sidebar";
+import { AddKidModal } from "@/app/components/AddKidModal";
 import { kids } from "@/app/data/kids";
 
 function SearchIcon() {
@@ -39,6 +43,8 @@ function ChevronIcon() {
 }
 
 export default function KidsPage() {
+  const [isAddKidOpen, setIsAddKidOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen bg-[#F6ECDF]">
       <Sidebar />
@@ -53,10 +59,13 @@ export default function KidsPage() {
               Niños
             </h1>
           </div>
-          <span className="flex items-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] px-[18px] py-[11px] text-[14.5px] font-extrabold text-white shadow-[0_8px_18px_-8px_rgba(238,129,100,.7)]">
+          <button
+            onClick={() => setIsAddKidOpen(true)}
+            className="flex items-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] px-[18px] py-[11px] text-[14.5px] font-extrabold text-white shadow-[0_8px_18px_-8px_rgba(238,129,100,.7)] transition-[transform,box-shadow] active:scale-95 active:shadow-[0_4px_10px_-4px_rgba(238,129,100,.7)]"
+          >
             <PlusIcon />
             Agregar niño
-          </span>
+          </button>
         </div>
 
         <div className="mb-[22px] flex items-center gap-[11px] rounded-[14px] border border-[#ECE0D0] bg-[#FFFDF9] px-4 py-3">
@@ -110,6 +119,7 @@ export default function KidsPage() {
           ))}
         </div>
       </div>
+      <AddKidModal open={isAddKidOpen} onClose={() => setIsAddKidOpen(false)} />
       </main>
     </div>
   );
