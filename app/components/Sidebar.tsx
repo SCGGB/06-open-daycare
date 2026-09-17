@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   BellIcon,
   HomeIcon,
@@ -12,6 +12,7 @@ import {
   UserIcon,
   UsersIcon,
 } from "./icons";
+import { CreatePostModal } from "./CreatePostModal";
 
 type NavItem = {
   label: string;
@@ -34,7 +35,9 @@ function isNavActive(item: NavItem, pathname: string): boolean {
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   return (
+    <>
     <aside className="sticky top-0 flex h-screen w-[248px] flex-none flex-col border-r border-[#ECE0D0] bg-[#FFFDF9] p-6 px-4">
       <a href="#" className="flex items-center gap-[11px] py-1 pl-2 pr-2 pb-[22px]">
         <div className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-[12px] bg-[linear-gradient(155deg,#F8C3A8,#F2937A)]">
@@ -48,13 +51,13 @@ export function Sidebar() {
         </div>
       </a>
 
-      <a
-        href="#"
+      <button
+        onClick={() => setIsCreatePostOpen(true)}
         className="mb-[18px] flex w-full items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] px-3 py-3 text-[14.5px] font-extrabold text-white shadow-[0_8px_18px_-8px_rgba(238,129,100,.75)]"
       >
         <PlusIcon />
         Nueva publicación
-      </a>
+      </button>
 
       <nav className="flex flex-1 flex-col gap-1">
         {navItems.map((item) =>
@@ -104,5 +107,10 @@ export function Sidebar() {
         </div>
       </div>
     </aside>
+    <CreatePostModal
+      open={isCreatePostOpen}
+      onClose={() => setIsCreatePostOpen(false)}
+    />
+    </>
   );
 }
