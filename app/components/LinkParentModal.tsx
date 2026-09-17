@@ -8,6 +8,10 @@ const INVITATION_CODE = "7K4P9";
 
 const PARENT_ROLES: ParentRole[] = ["Mamá", "Papá", "Tutor/a"];
 
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
 interface LinkParentModalProps {
   open: boolean;
   onClose: () => void;
@@ -74,6 +78,8 @@ export function LinkParentModal({
   kidName,
 }: LinkParentModalProps) {
   const [parentRole, setParentRole] = useState<ParentRole>("Mamá");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   if (!open) return null;
 
@@ -122,8 +128,23 @@ export function LinkParentModal({
             <input
               type="email"
               placeholder="correo@ejemplo.com"
-              className="w-full rounded-[14px] border-[1.5px] border-[#EADFD0] bg-white px-4 py-[13px] text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] focus:outline-none"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (emailError) setEmailError("");
+              }}
+              onBlur={() => {
+                if (!email) setEmailError("Ingresá un email.");
+                else if (!isValidEmail(email))
+                  setEmailError("Ingresá un email válido.");
+              }}
+              className={`w-full rounded-[14px] border-[1.5px] bg-white px-4 py-[13px] text-[15px] text-[#3F362E] placeholder:text-[#B6A99B] focus:outline-none ${
+                emailError ? "border-[#D9583C]" : "border-[#EADFD0]"
+              }`}
             />
+            {emailError && (
+              <p className="mt-1 text-[12px] text-[#D9583C]">{emailError}</p>
+            )}
           </div>
 
           <div className="mb-5">
@@ -163,7 +184,17 @@ export function LinkParentModal({
           </div>
 
           <button
-            onClick={onClose}
+            onClick={() => {
+              if (!email) {
+                setEmailError("Ingresá un email.");
+                return;
+              }
+              if (!isValidEmail(email)) {
+                setEmailError("Ingresá un email válido.");
+                return;
+              }
+              onClose();
+            }}
             className="flex w-full items-center justify-center gap-[9px] rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] px-4 py-[14px] text-[15.5px] font-extrabold text-white shadow-[0_10px_22px_-8px_rgba(238,129,100,.7)]"
           >
             <SendIcon />
