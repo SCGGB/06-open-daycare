@@ -2,6 +2,7 @@ import Link from "next/link";
 import { kids } from "@/app/data/kids";
 import type { Kid, KidParent } from "@/app/data/kids";
 import { Sidebar } from "@/app/components/Sidebar";
+import { ParentInviteButton } from "@/app/components/ParentInviteButton";
 import { notFound } from "next/navigation";
 
 function BackChevronIcon() {
@@ -53,23 +54,6 @@ function SummaryIcon() {
     >
       <circle cx="12" cy="12" r="4" />
       <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-    </svg>
-  );
-}
-
-function PlusIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 5v14M5 12h14" />
     </svg>
   );
 }
@@ -208,14 +192,7 @@ export default async function KidProfilePage({
                     </div>
                   );
                 })}
-                <span className="flex items-center gap-3 pt-2">
-                  <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border-[1.5px] border-dashed border-[#D8CBBA] text-[#B0A290]">
-                    <PlusIcon />
-                  </span>
-                  <span className="text-[14.5px] font-extrabold text-[#C5503A]">
-                    Vincular otro padre
-                  </span>
-                </span>
+                <ParentInviteButton kidName={kid.name} />
               </div>
             </div>
           </div>
