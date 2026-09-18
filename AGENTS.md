@@ -24,6 +24,14 @@ There is no test setup (no test runner, no CI workflows).
 
 - **Playwright**: the MCP runs via `opencode.json` (`npx -y @playwright/mcp@latest`). Playwright screenshots and anything Playwright-related go in the **`playwright-mcp/`** folder (git-tracked). Do **not** put them in `.playwright-mcp/` — that folder is gitignored runtime output (console logs, page `.yml`/`.png` snapshots) and is not for committed assets.
 - **Context7**: use this MCP for up-to-date framework/library docs.
+- **Supabase**: MCP conectado al proyecto de Supabase. Usa los tools `supabase_*` para SQL, migraciones, RLS, Edge Functions, logs, tipos TypeScript y advisors de seguridad/rendimiento. La contraseña de la DB está en `.ENV` (`SUPABASE_DB_PASSWORD`). No instalar el cliente `@supabase/supabase-js` hasta que se necesite; la referencia a `../07-DB-Schema` contiene el esquema/documentación de la DB.
+
+## Supabase
+
+- El esquema y documentación de la base de datos viven en `../07-DB-Schema` (referencia del proyecto).
+- Al tocar la base de datos: activar RLS en toda tabla expuesta, crear policies acordes al modelo de acceso, y **nunca** exponer claves secretas en el cliente (solo publishable/`NEXT_PUBLIC_`).
+- Antes de escribir SQL, revisar el changelog de Supabase y las skills (`supabase`, `supabase-postgres-best-practices`).
+- Regla general: tabla con RLS + policies explícitas (no `auth.role()`), views con `security_invoker = true`.
 
 ## Design references
 
@@ -40,6 +48,8 @@ There is no test setup (no test runner, no CI workflows).
 - /spec usaremos esta habilidad para crear las especificaciones
 - /spec-impl usaremos esta skill para hacer las implementaciones
 - /verify-spec verificación de specs con el agente spec-verifier
+- /supabase skill oficial de Supabase (agent-skills) para cualquier tarea con Supabase: Auth, RLS, Edge Functions, Realtime, Storage, logs, debugging. Antes de implementar, verificar contra el changelog (`https://supabase.com/changelog.md`).
+- /supabase-postgres-best-practices best practices de Postgres/Supabase. Cargar ANTES de escribir o cambiar cualquier SQL (tablas, columnas, migraciones, RLS, índices, triggers).
 
 ## Agents
 - **spec-verifier**: agente subagent que verifica criterios de aceptación desde archivos spec usando Context7, Playwright y vision

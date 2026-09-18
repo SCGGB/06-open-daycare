@@ -1,11 +1,20 @@
 {
+  
   "$schema": "https://opencode.ai/config.json",
+  "lsp": true,
   "permission": {
   "external_directory": {
     "/tmp/**": "allow"
   },
   "bash": "allow"
 },
+    "references": {
+      "docs": {
+        "path": "../07-DB-Schema",
+        "description": "Database schema and documentation"
+      }
+    
+  },
   "mcp": {
     "playwright": {
       "type": "local",
