@@ -57,6 +57,11 @@ There is no test setup (no test runner, no CI workflows).
 
 **Herramientas:** el CLI de Supabase no está instalado; los cambios se aplican vía MCP (`supabase_apply_migration`). Los archivos usan el prefijo `<YYYYMMDD>_<nombre>.sql` (8 dígitos), convención del proyecto: el CLI solo reconoce prefijos de 14 dígitos, así que `supabase db push` / `db reset` no aplican estos archivos.
 
+## Specs
+
+- Las specs viven en `specs/` con numeración secuencial (`01-...md`).
+- **Cualquier archivo relacionado con la base de datos va en `specs/database/`** (esquema, tablas, migraciones, RLS, policies, seeds, documentación de la DB, etc.), continuando la numeración secuencial global (`07-...`, `08-...`).
+
 ## Design references
 
 - `referencias/pantallas/*.dc.html` — screen mockups (login, feed, perfil-nino, etc.). These are the source of truth for UI structure; new screens should follow them.
