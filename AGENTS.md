@@ -32,6 +32,30 @@ There is no test setup (no test runner, no CI workflows).
 - Al tocar la base de datos: activar RLS en toda tabla expuesta, crear policies acordes al modelo de acceso, y **nunca** exponer claves secretas en el cliente (solo publishable/`NEXT_PUBLIC_`).
 - Antes de escribir SQL, revisar el changelog de Supabase y las skills (`supabase`, `supabase-postgres-best-practices`).
 - Regla general: tabla con RLS + policies explícitas (no `auth.role()`), views con `security_invoker = true`.
+- **Todo cambio de esquema se hace mediante una migración versionada** — ver la sección «Migraciones» más abajo.
+
+## Migraciones
+
+> **Regla:** siempre usamos migraciones. Cualquier manipulación de la base de datos (esquema o datos) pasa por un archivo versionado en `supabase/migrations/`; nunca se ejecuta SQL suelto contra la base.
+
+**Flujo obligatorio (patrón del SPEC 07):**
+
+1. Escribir el SQL **primero** en `supabase/migrations/<YYYYMMDD>_<nombre>.sql` (fuente de verdad versionada).
+2. Aplicar ese mismo SQL en remoto con `supabase_apply_migration` usando como `name` el `<nombre>` del archivo (sin timestamp).
+3. Verificar con `supabase_list_migrations` que la entrada quedó registrada, y con consultas de solo lectura que la estructura y los datos son los esperados.
+4. Commitear el archivo de migración en el **mismo** cambio que el código que lo requiere.
+
+**Reglas de contenido:**
+
+- Aplica a todo: tablas, columnas, índices, constraints, enums, RLS, policies, triggers, funciones, vistas y seeds.
+- Cada archivo debe ser autocontenido y reproducible: `drop ... if exists` antes de `create`, seeds idempotentes (`insert ... select ... where not exists`).
+- El SQL remoto y el del archivo deben coincidir; si divergen, se corrige el archivo (el historial remoto no se reescribe).
+- `supabase/migrations/` debe quedar alineado 1:1 con el historial remoto: una entrada en `supabase_migrations.schema_migrations` por archivo, con el mismo nombre.
+- Nada de "SQL suelto": cambios de esquema aplicados con `execute_sql`/SQL Editor sin archivo equivalente quedan fuera del control de versiones y **no** se aceptan como entrega.
+
+**Excepciones:** se permite `supabase_execute_sql` con `SELECT` para inspeccionar/verificar (listar tablas, policies, advisors, logs). Si la consulta revela la necesidad de un cambio de esquema, ese cambio pasa por migración.
+
+**Herramientas:** el CLI de Supabase no está instalado; los cambios se aplican vía MCP (`supabase_apply_migration`). Los archivos usan el prefijo `<YYYYMMDD>_<nombre>.sql` (8 dígitos), convención del proyecto: el CLI solo reconoce prefijos de 14 dígitos, así que `supabase db push` / `db reset` no aplican estos archivos.
 
 ## Design references
 
