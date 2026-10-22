@@ -1,0 +1,17 @@
+# Supabase project configuration.
+#
+# The Supabase CLI is not installed in this project yet: schema changes are
+# applied remotely through the Supabase MCP (apply_migration) and mirrored into
+# supabase/migrations/ as the versioned source of truth (SPEC 07 pattern).
+#
+# Note: the migration files follow the SPEC 07 naming convention
+# (<YYYYMMDD>_<name>.sql), not the CLI convention (<YYYYMMDDHHMMSS>_<name>.sql).
+# The CLI only picks up files with a 14-digit timestamp prefix, so `supabase db
+# push` / `supabase db reset` would consider every local file as already
+# applied. Use the MCP (apply_migration) to apply changes, and keep this file
+# in sync with the remote history.
+
+project_id = "opendaycare"
+
+[db]
+major_version = 17
