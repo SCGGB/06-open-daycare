@@ -2,8 +2,11 @@ import { ImageIcon, MegaphoneIcon } from "./components/icons";
 import { PostCard } from "./components/PostCard";
 import { PostComposer } from "./components/PostComposer";
 import { Sidebar } from "./components/Sidebar";
+import { requireUser } from "@/utils/supabase/auth";
 
-export default function Home() {
+export default async function Home() {
+  await requireUser();
+
   return (
     <div className="flex min-h-screen bg-[#F6ECDF]">
       <Sidebar />

@@ -13,6 +13,7 @@ import {
   UsersIcon,
 } from "./icons";
 import { CreatePostModal } from "./CreatePostModal";
+import { logout } from "@/app/actions/auth";
 
 type NavItem = {
   label: string;
@@ -97,13 +98,15 @@ export function Sidebar() {
             </div>
             <div className="text-xs text-[#A89A8B]">Maestra · Soles</div>
           </div>
-          <a
-            href="#"
-            title="Cerrar sesión"
-            className="flex h-8 w-8 flex-none items-center justify-center rounded-[10px] bg-[#F6ECDF] text-[#94887B]"
-          >
-            <LogoutIcon />
-          </a>
+          <form action={logout}>
+            <button
+              type="submit"
+              title="Cerrar sesión"
+              className="flex h-8 w-8 flex-none items-center justify-center rounded-[10px] bg-[#F6ECDF] text-[#94887B]"
+            >
+              <LogoutIcon />
+            </button>
+          </form>
         </div>
       </div>
     </aside>

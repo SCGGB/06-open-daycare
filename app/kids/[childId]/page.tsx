@@ -3,6 +3,7 @@ import { kids } from "@/app/data/kids";
 import type { Kid, KidParent } from "@/app/data/kids";
 import { Sidebar } from "@/app/components/Sidebar";
 import { ParentInviteButton } from "@/app/components/ParentInviteButton";
+import { requireUser } from "@/utils/supabase/auth";
 import { notFound } from "next/navigation";
 
 function BackChevronIcon() {
@@ -71,6 +72,8 @@ export default async function KidProfilePage({
 }: {
   params: Promise<{ childId: string }>;
 }) {
+  await requireUser();
+
   const { childId } = await params;
   const kid: Kid | undefined = kids.find((k) => k.id === childId);
   if (!kid) notFound();
