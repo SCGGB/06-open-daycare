@@ -2,14 +2,14 @@ import { ImageIcon, MegaphoneIcon } from "./components/icons";
 import { PostCard } from "./components/PostCard";
 import { PostComposer } from "./components/PostComposer";
 import { Sidebar } from "./components/Sidebar";
-import { requireUser } from "@/utils/supabase/auth";
+import { getCurrentUserProfile } from "@/utils/supabase/profile";
 
 export default async function Home() {
-  await requireUser();
+  const profile = await getCurrentUserProfile();
 
   return (
     <div className="flex min-h-screen bg-[#F6ECDF]">
-      <Sidebar />
+      <Sidebar profile={profile} />
 
       <main className="h-screen min-w-0 flex-1 overflow-y-auto">
         <div className="mx-auto w-full max-w-[760px] px-10 pt-[34px] pb-20">

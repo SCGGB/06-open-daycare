@@ -1,8 +1,8 @@
-import { requireUser } from "@/utils/supabase/auth";
 import { KidsPageClient } from "./KidsPageClient";
+import { getCurrentUserProfile } from "@/utils/supabase/profile";
 
 export default async function KidsPage() {
-  await requireUser();
+  const profile = await getCurrentUserProfile();
 
-  return <KidsPageClient />;
+  return <KidsPageClient profile={profile} />;
 }

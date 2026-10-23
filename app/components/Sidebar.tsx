@@ -34,9 +34,27 @@ function isNavActive(item: NavItem, pathname: string): boolean {
   return pathname.startsWith(item.href);
 }
 
-export function Sidebar() {
+export function Sidebar({
+  profile,
+}: {
+  profile?: {
+    fullName: string;
+    role: string;
+    daycareName: string | null;
+  } | null;
+} = {}) {
   const pathname = usePathname();
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+  const fullName = profile?.fullName || "Caro Giménez";
+  const firstInitial = fullName.trim().charAt(0).toUpperCase() || "C";
+  const roleLabel = profile?.role
+    ? profile.role === "staff"
+      ? "Maestra"
+      : profile.role === "admin"
+        ? "Administradora"
+        : "Familiar"
+    : "Maestra";
+  const daycareLabel = profile?.daycareName || "Soles";
   return (
     <>
     <aside className="sticky top-0 flex h-screen w-[248px] flex-none flex-col border-r border-[#ECE0D0] bg-[#FFFDF9] p-6 px-4">
@@ -90,13 +108,15 @@ export function Sidebar() {
       <div className="mt-2.5 border-t border-[#ECE0D0] pt-[14px]">
         <div className="flex items-center gap-[11px] px-2 py-1.5">
           <div className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-full bg-[#F2937A] font-fredoka text-base font-semibold text-white">
-            C
+            {firstInitial}
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-sm font-extrabold text-[#3F362E]">
-              Caro Giménez
+            <div className="truncate text-sm font-extrabold text-[#3F362E]">
+              {fullName}
             </div>
-            <div className="text-xs text-[#A89A8B]">Maestra · Soles</div>
+            <div className="truncate text-xs text-[#A89A8B]">
+              {roleLabel} · {daycareLabel}
+            </div>
           </div>
           <form action={logout}>
             <button

@@ -42,12 +42,20 @@ function ChevronIcon() {
   );
 }
 
-export function KidsPageClient() {
+export function KidsPageClient({
+  profile,
+}: {
+  profile?: {
+    fullName: string;
+    role: string;
+    daycareName: string | null;
+  } | null;
+}) {
   const [isAddKidOpen, setIsAddKidOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-[#F6ECDF]">
-      <Sidebar />
+      <Sidebar profile={profile} />
       <main className="h-screen min-w-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-[880px] px-10 pt-[34px] pb-20">
         <div className="mb-[22px] flex items-end justify-between gap-4">
