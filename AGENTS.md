@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Stack
 
-Next.js 16 (App Router) + React 19 + Tailwind v4 (CSS-first via `@import "tailwindcss"`, no `tailwind.config`). TypeScript strict. All UI lives under `app/`; the only route page so far is `app/page.tsx` (default create-next-app scaffold).
+Next.js 16 (App Router) + React 19 + Tailwind v4 (CSS-first via `@import "tailwindcss"`, no `tailwind.config`). TypeScript strict. All UI lives under `app/`. Supabase (`@supabase/supabase-js` + `@supabase/ssr`) is the data layer for interacting with the database from the app.
 
 ## Commands
 
@@ -24,10 +24,15 @@ There is no test setup (no test runner, no CI workflows).
 
 - **Playwright**: the MCP runs via `opencode.json` (`npx -y @playwright/mcp@latest`). Playwright screenshots and anything Playwright-related go in the **`playwright-mcp/`** folder (git-tracked). Do **not** put them in `.playwright-mcp/` — that folder is gitignored runtime output (console logs, page `.yml`/`.png` snapshots) and is not for committed assets.
 - **Context7**: use this MCP for up-to-date framework/library docs.
-- **Supabase**: MCP conectado al proyecto de Supabase. Usa los tools `supabase_*` para SQL, migraciones, RLS, Edge Functions, logs, tipos TypeScript y advisors de seguridad/rendimiento. La contraseña de la DB está en `.ENV` (`SUPABASE_DB_PASSWORD`). No instalar el cliente `@supabase/supabase-js` hasta que se necesite; la referencia a `../07-DB-Schema` contiene el esquema/documentación de la DB.
+- **Supabase**: MCP conectado al proyecto de Supabase. Usa los tools `supabase_*` para SQL, migraciones, RLS, Edge Functions, logs, tipos TypeScript y advisors de seguridad/rendimiento. La contraseña de la DB está en `.ENV` (`SUPABASE_DB_PASSWORD`). La referencia a `../07-DB-Schema` contiene el esquema/documentación de la DB.
 
 ## Supabase
 
+- La aplicación interactúa con la base de datos desde Next.js mediante `@supabase/supabase-js` + `@supabase/ssr` (sesión basada en cookies).
+- Helpers de cliente en `utils/supabase/`: `client.ts` para Client Components, `server.ts` para Server Components, Server Actions y Route Handlers, y `proxy.ts` para refrescar la sesión. El `proxy.ts` de la raíz invoca `updateSession`; no duplicar esa lógica.
+- Importar siempre los helpers (`@/utils/supabase/client` o `@/utils/supabase/server`); no instanciar clientes de Supabase dentro de componentes.
+- En código de servidor, autorizar con `supabase.auth.getClaims()`; no confiar en `getSession()`.
+- Variables de entorno públicas en `.env.local`: `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Nunca exponer `service_role` ni secret keys en el cliente.
 - El esquema y documentación de la base de datos viven en `../07-DB-Schema` (referencia del proyecto).
 - Al tocar la base de datos: activar RLS en toda tabla expuesta, crear policies acordes al modelo de acceso, y **nunca** exponer claves secretas en el cliente (solo publishable/`NEXT_PUBLIC_`).
 - Antes de escribir SQL, revisar el changelog de Supabase y las skills (`supabase`, `supabase-postgres-best-practices`).
@@ -56,6 +61,11 @@ There is no test setup (no test runner, no CI workflows).
 **Excepciones:** se permite `supabase_execute_sql` con `SELECT` para inspeccionar/verificar (listar tablas, policies, advisors, logs). Si la consulta revela la necesidad de un cambio de esquema, ese cambio pasa por migración.
 
 **Herramientas:** el CLI de Supabase no está instalado; los cambios se aplican vía MCP (`supabase_apply_migration`). Los archivos usan el prefijo `<YYYYMMDD>_<nombre>.sql` (8 dígitos), convención del proyecto: el CLI solo reconoce prefijos de 14 dígitos, así que `supabase db push` / `db reset` no aplican estos archivos.
+
+## Specs
+
+- Las specs viven en `specs/` con numeración secuencial (`01-...md`).
+- **Cualquier archivo relacionado con la base de datos va en `specs/database/`** (esquema, tablas, migraciones, RLS, policies, seeds, documentación de la DB, etc.), continuando la numeración secuencial global (`07-...`, `08-...`).
 
 ## Design references
 

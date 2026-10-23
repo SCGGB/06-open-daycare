@@ -3,6 +3,7 @@ import { kids } from "@/app/data/kids";
 import type { Kid, KidParent } from "@/app/data/kids";
 import { Sidebar } from "@/app/components/Sidebar";
 import { ParentInviteButton } from "@/app/components/ParentInviteButton";
+import { getCurrentUserProfile } from "@/utils/supabase/profile";
 import { notFound } from "next/navigation";
 
 function BackChevronIcon() {
@@ -71,13 +72,15 @@ export default async function KidProfilePage({
 }: {
   params: Promise<{ childId: string }>;
 }) {
+  const profile = await getCurrentUserProfile();
+
   const { childId } = await params;
   const kid: Kid | undefined = kids.find((k) => k.id === childId);
   if (!kid) notFound();
 
   return (
     <div className="flex min-h-screen bg-[#F6ECDF]">
-      <Sidebar />
+      <Sidebar profile={profile} />
       <main className="h-screen min-w-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-[820px] px-10 pt-[34px] pb-20">
         <Link

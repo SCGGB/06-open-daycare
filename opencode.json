@@ -9,7 +9,7 @@
   "bash": "allow"
 },
     "references": {
-      "docs": {
+      "db-schema": {
         "path": "../07-DB-Schema",
         "description": "Database schema and documentation"
       }
